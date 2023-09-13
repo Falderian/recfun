@@ -23,21 +23,18 @@ object RecFun extends RecFunInterface:
   /**
    * Exercise 2
    */
-  def balance(chars: List[Char]): Boolean = {
-  def difference(acc: Int, chars: List[Char]): Boolean =
-    if chars.isEmpty then acc == 0
-    else
-      if chars.head == ')' && acc == 0 then return false
-      val newAcc: Int =
+  def balance(chars: List[Char]): Boolean =
+    def loop(acc: Int, chars: List[Char]): Boolean =
+      if chars.isEmpty then acc == 0
+      else
         chars.head match
-          case '(' => acc + 1
-          case ')' => acc - 1
-          case _ => acc
-      difference(newAcc, chars.tail)
+          case '(' => loop(acc + 1, chars.tail)
+          case ')' =>
+            if acc == 0 then return false
+            else loop(acc - 1, chars.tail)
+          case _ => loop(acc, chars.tail)
 
-  difference(0, chars)
-}
-
+    loop(0, chars)
 
   /**
    * Exercise 3
